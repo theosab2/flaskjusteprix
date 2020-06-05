@@ -8,9 +8,7 @@ listPrix = []
 def index():
     global k
     k += 1
-    occurence = k
     prix = 12
-
     return render_template('index.html', title = prix, listPrix=listPrix)
 
 @app.route('/', methods=['get','post'])
