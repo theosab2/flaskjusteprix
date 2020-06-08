@@ -33,6 +33,8 @@ resultat = []
 reponse = ""
 value = 0
 k = 0
+tdebut = 0
+
 while k < 9:
     price.append(response.json()['Products'][k]['BestOffer']['SalePrice'])
     picture.append(response.json()['Products'][k]['MainImageUrl'])
@@ -46,6 +48,7 @@ listPrix = []
 @app.route('/', methods=['get','post'])
 def index():
     global value
+    global tdebut
     if(request.method == 'POST'):
         nombre = request.form.get('nombre')
         if(nombre == ""):
@@ -68,16 +71,16 @@ def index():
                 'nombre' : nombre,
                 'choix' : choix
             }
+            if reponse == "gagné":
+                return render_template('index.html', temps = datetime.now() - tdebut ,choix = choix, resultat = resultat, prix = price[value],imgPr =picture[value], prNom = prNom[value])
             return render_template('index.html', choix = choix, resultat = resultat, prix = price[value],imgPr =picture[value], prNom = prNom[value])
     else:
         i = 0
         while i < len(choix):
             choix.pop(i)
-
+        tdebut = datetime.now()
         value = int(9*random.random())
         return render_template('index.html',prix = price[value], listPrix=listPrix, imgPr =picture[value], prNom = prNom[value])
 
 if __name__ == '__main__':
     app.run(debug=True, host='localhost')    
-
-
